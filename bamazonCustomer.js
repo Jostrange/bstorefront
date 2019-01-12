@@ -5,7 +5,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "Madeline55!",
+    password: "",
     database: "bamazon"
 });
 
@@ -17,7 +17,7 @@ function showInventory() {
     connection.query('SELECT id, product_name, price FROM products', (error, results) => {
         if (error) {
             return console.log("error with inventory");
-        } else console.log("success!")
+        } else console.log("")
 
         results.forEach(result => {
             console.log(`${result.product_name}`);
@@ -37,18 +37,25 @@ function fulfillOrder(product_id, quantity) {
         if (product.stock_quantity >= quantity) { //this checks the inventory against the input answer
             //calculate the remaining quantity after fulfilling this order
             var remainingQuantity = product.stock_quantity - quantity;
-            console.log(remainingQuantity)
+            console.log("Remaining Quantity: " + remainingQuantity)
+            //calculate price of order
+            var priceOfOrder = product.price * quantity;
+            console.log("Total " + priceOfOrder);
+
             //update SQL Database for quantity to reflect orders
             connection.query(`UPDATE products SET stock_quantity = ${remainingQuantity} WHERE id  = ${product_id}`)
-            return console.log("quantity satisfied!")
-        } console.log("insufficient quantity")
+            return console.log("Quantity satisfied!")
+        } console.log("Insufficient quantity sorry!")
         return false;
-        
+
+
+
 
     })
-// var updatedItemQuantity = res[0].stock_quantity - answer.quantity;
-//update quantity in MYSQL to reflect rest[0].stock_quantity = stock_quantity - answer.quantity
-// select id FROM product_name  WHERE res[0].price * answer.quantity)
+    //things needed still
+    // var updatedItemQuantity = res[0].stock_quantity - answer.quantity; - done
+    //update quantity in MYSQL to reflect rest[0].stock_quantity = stock_quantity - answer.quantity - done
+    // select id FROM product_name  WHERE res[0].price * answer.quantity) done
 
 
 
@@ -72,7 +79,7 @@ var startOrder = function (orderQuestions) {
         {
             type: "input",
             name: "quantity",
-            message: "How many units do you want to order? (Enter a number)",
+            message: "How many units would you like to order? (Enter a number)",
             validate: function (value) {
                 if (value.match(/^|d+$/) && parseInt(value) > 0 && parseInt(value)) {
                     return true;
@@ -85,7 +92,7 @@ var startOrder = function (orderQuestions) {
         var productId = parseInt(answers.id);
         const quantity = parseInt(answers.quantity)
         fulfillOrder(productId, quantity);
-        
+
 
     });
 }
