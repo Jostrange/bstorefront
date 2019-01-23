@@ -24,13 +24,15 @@ cd bamazon
 npm install
 ```
 
-** 4. Connect to Database 
+**4. Connect to Database 
+
+Follow directions on which db to connect to along with the seed data in the file
 
 ```
-Use `bamazon.sql` file and follow directions on which db to connect to along with the seed data
+use `bamazon.sql`
 ```
 
-** 4A 
+**4A 
 
 ```
 seed data into database
